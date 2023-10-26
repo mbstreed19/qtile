@@ -1,0 +1,26 @@
+#+TITLE: My New Qtile Theme modified from EndevourOS default Qtile config
+#+author: Michael Streed
+
+* Purpose
+I wanted to try EndevourOS for the first time and when I did I also fell in love with the way they had their 
+Qtile set up. I wanted to make it my own and also add in a way to be able to quickly change theme. 
+
+* Features: 
+- Modular configuration spread out to make it easy to find what section needs modified. 
+- Named workspaces that have affinity for the monitor I want them to be on. 
+ 
+* Tasks that need done
+** TODO Get Qtile config Operational [0/4]
+- [ ] Add my keybindings
+- [ ] Add my screens for 3 monitor setup
+- [ ] Edit Widgets to my liking
+- [ ] Check other modules for edits as needed [0/4]
+  - [ ] Mouse  
+  - [ ] Groups
+  - [ ] Hooks 
+  - [ ] Layout
+* New Features I want to add
+** TODO New Features in Qtile Config
+- [ ] Make Scratchpads
+  - [ ] Terminal Scratchpad
+  - [ ] Some other scratchpad. Not sure what to do.   
