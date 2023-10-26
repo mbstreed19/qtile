@@ -1,0 +1,14 @@
+#+TITLE: Keybindings 
+#+AUTHOR: Michael Streed 
+#+PROPERTY: header-args :tangle keys.py
+#+auto_tangle: t
+#+STARTUP: showeverything
+
+* Imports
+These are the modules that need to be imported in order for keybindings to work
+
+#+begin_src python
+from libqtile.lazy import lazy
+from libqtile.config import Key
+
+#+end_src
