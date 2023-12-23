@@ -1,0 +1,54 @@
+#+TITLE: Layouts 
+#+AUTHOR: Michael Streed 
+#+PROPERTY: header-args :tangle layouts.py
+#+auto_tangle: t
+#+STARTUP: showeverything
+
+* Imports
+These are the imports needed for layouts to work
+#+begin_src python
+from libqtile import layout
+from libqtile.config import Match
+
+#+end_src
+
+* layouts
+These are the various tiling layouts to pick from. you can try others out by un-commenting lines. 
+#+begin_src python
+layouts = [
+    layout.MonadTall(margin=8, border_focus='#5294e2',
+                     border_normal='#2c5380'),
+    #layout.Columns(border_focus_stack='#d75f5f'),
+    layout.Max(),
+    # Try more layouts by unleashing below layouts.
+    # layout.Stack(num_stacks=2),
+    # layout.Bsp(),
+    # layout.Matrix(),
+    # layout.MonadTall(),
+    # layout.MonadWide(),
+    # layout.RatioTile(),
+    # layout.Tile(),
+    # layout.TreeTab(),
+    # layout.VerticalTile(),
+    # layout.Zoomy(),
+]
+
+
+#+end_src
+
+* floating layout
+This is where the settings for a floating layout shall go. 
+#+begin_src python
+floating_layout = layout.Floating(float_rules=[
+    # Run the utility of `xprop` to see the wm class and name of an X client.
+    *layout.Floating.default_float_rules,
+    Match(wm_class='confirmreset'),  # gitk
+    Match(wm_class='makebranch'),  # gitk
+    Match(wm_class='maketag'),  # gitk
+    Match(wm_class='ssh-askpass'),  # ssh-askpass
+    Match(title='branchdialog'),  # gitk
+    Match(title='pinentry'),  # GPG key password entry
+])
+
+
+#+end_src

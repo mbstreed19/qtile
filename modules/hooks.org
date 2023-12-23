@@ -1,0 +1,38 @@
+#+TITLE: Hooks 
+#+AUTHOR: Michael Streed 
+#+PROPERTY: header-args :tangle hooks.py
+#+auto_tangle: t
+#+STARTUP: showeverything
+
+* Hooks
+hooks are functions that we can pick to happen during certain events.
+** Imports 
+These modules need to be loaded to be able to use these hooks. 
+#+begin_src python
+from libqtile import hook
+import subprocess
+import os
+#from libqtile.utils import send_notification
+  
+#+end_src
+** Auto Start Once
+This will run once during the first startup of Qtile
+#+begin_src python
+@hook.subscribe.startup
+def autostart():
+    home = os.path.expanduser("~/.config/qtile/")
+    subprocess.call([home + "autostart.sh"])
+    # send_notification("running autostart")
+
+#+end_src
+
+** TODO Auto Start
+This will run each time I start Qtile, as well as each time I restart Qtile.
+#+begin_src python 
+@hook.subscribe.startup_once
+def screenlayout():
+    home = os.path.expanduser("~")
+    subprocess.call([home + "/.screenlayout/screenlayout.sh"])
+   # send_notification("setting up screenlayout")
+
+#+end_src

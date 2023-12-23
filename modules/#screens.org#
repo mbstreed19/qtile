@@ -1,9 +1,28 @@
+#+TITLE: Screens 
+#+AUTHOR: Michael Streed 
+#+PROPERTY: header-args :tangle screens.py
+#+auto_tangle: t
+#+STARTUP: showeverything
+
+FIXME: systray widget crash due to multi-screens 
+FIXME: update widget not working. 
+TODO: Investigate and pick widgets to replace.  
+ 
+
+* Imports 
+This is where my required imports will go
+#+begin_src python
 from libqtile import bar
 from .widgets import *
 from libqtile.config import Screen
 from modules.keys import terminal
 import os
+#+end_src
 
+* Screens
+Screens are what qtile calls your monitors. I have a 3 monitor setup. This is how I choose to hack it together.
+screens is just a variable containing a list of Screen objects that have the various properties I want. Namely the bar and the widgets needed for those. 
+#+begin_src python
 screens = [
     Screen(
         top=bar.Bar(
@@ -238,3 +257,5 @@ Screen(
     ),
 
 ]
+
+#+end_src
