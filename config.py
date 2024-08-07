@@ -2,10 +2,11 @@ from libqtile import bar, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-from libqtile import hook
-import subprocess
 import os
-from colorschemes import Dracula 
+import subprocess
+from libqtile import hook
+from colorschemes import Dracula
+
 mod = "mod4"
 terminal = "kitty" 
 browser = "firefox"
@@ -58,21 +59,6 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "b", lazy.spawn(browser), desc="Spawn a command using a prompt widget"),
 ]
-
-# Add key bindings to switch VTs in Wayland.
-# We can't check qtile.core.name in default config as it is loaded before qtile is started
-# We therefore defer the check until the key binding is run by using .when(func=...)
-# for vt in range(1, 8):
-#     keys.append(
-#         Key(
-#             ["control", "mod1"],
-#             f"f{vt}",
-#             lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
-#             desc=f"Switch to VT{vt}",
-#         )
-#     )
-#
-
 groups = [Group(i) for i in "123456789"]
 
 for i in groups:
@@ -86,16 +72,16 @@ for i in groups:
                 desc="Switch to group {}".format(i.name),
             ),
             # mod + shift + group number = switch to & move focused window to group
-            Key(
-                [mod, "shift"],
-                i.name,
-                lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name),
-            ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod + shift + group number = move focused window to group
-            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            #     desc="move focused window to group {}".format(i.name)),
+            # Key(
+            #     [mod, "shift"],
+            #     i.name,
+            #     lazy.window.togroup(i.name, switch_group=True),
+            #     desc="Switch to & move focused window to group {}".format(i.name),
+            # ),
+            #Or, use below if you prefer not to switch to that group.
+            # mod + shift + group number = move focused window to group
+            Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
+                desc="move focused window to group {}".format(i.name)),
         ]
     )
 
@@ -110,8 +96,9 @@ layouts = [
         border_focus = cs.pink,
         border_normal = cs.purple,
         border_width = 5,
-        margin = 5,
-        
+        margin = 10, 
+        single_border_width = 5,
+        single_margin = 10,
     ),
     # layout.MonadWide(),
     # layout.RatioTile(),
@@ -130,27 +117,14 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
+                widget.GroupBox(
+                     active = "50fa7b",
+                     background = "282A36",
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                # widget.StatusNotifier(),
-                widget.Systray(),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-                widget.QuickExit(),
             ],
-            24,
+            30,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -211,10 +185,8 @@ wl_xcursor_size = 24
 # java that happens to be on java's whitelist.
 wmname = "Qtile"
 
-
-#from libqtile.utils import send_notification
-
-@hook.subscribe.startup
+@hook.subscribe.startup_once
 def autostart():
-    home = os.path.expanduser("~/scripts/")
-    subprocess.call([home + "autostart.sh"])
+    script = os.path.expanduser("~/.config/qtile/autostart.sh")
+    subprocess.run([script])
+ 
