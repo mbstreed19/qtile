@@ -2,6 +2,9 @@ from libqtile import bar, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+from libqtile import hook
+import subprocess
+import os
 from colorschemes import Dracula 
 mod = "mod4"
 terminal = "kitty" 
@@ -105,6 +108,10 @@ layouts = [
     # layout.Matrix(),
     layout.MonadTall(
         border_focus = cs.pink,
+        border_normal = cs.purple,
+        border_width = 5,
+        margin = 5,
+        
     ),
     # layout.MonadWide(),
     # layout.RatioTile(),
@@ -115,8 +122,8 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="sans",
-    fontsize=12,
+    font="Hack Nerd",
+    fontsize=14,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
@@ -202,4 +209,12 @@ wl_xcursor_size = 24
 #
 # We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
 # java that happens to be on java's whitelist.
-wmname = "LG3D"
+wmname = "Qtile"
+
+
+#from libqtile.utils import send_notification
+
+@hook.subscribe.startup
+def autostart():
+    home = os.path.expanduser("~/scripts/")
+    subprocess.call([home + "autostart.sh"])
