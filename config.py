@@ -2,10 +2,11 @@ from libqtile import bar, layout, qtile, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-
+from colorschemes import Dracula 
 mod = "mod4"
 terminal = "kitty" 
 browser = "firefox"
+cs = Dracula()
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -58,16 +59,16 @@ keys = [
 # Add key bindings to switch VTs in Wayland.
 # We can't check qtile.core.name in default config as it is loaded before qtile is started
 # We therefore defer the check until the key binding is run by using .when(func=...)
-for vt in range(1, 8):
-    keys.append(
-        Key(
-            ["control", "mod1"],
-            f"f{vt}",
-            lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
-            desc=f"Switch to VT{vt}",
-        )
-    )
-
+# for vt in range(1, 8):
+#     keys.append(
+#         Key(
+#             ["control", "mod1"],
+#             f"f{vt}",
+#             lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
+#             desc=f"Switch to VT{vt}",
+#         )
+#     )
+#
 
 groups = [Group(i) for i in "123456789"]
 
@@ -96,13 +97,15 @@ for i in groups:
     )
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
-    layout.Max(),
+    # layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=4),
+    # layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    # layout.MonadTall(),
+    layout.MonadTall(
+        border_focus = cs.pink,
+    ),
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
