@@ -1,3 +1,4 @@
-#!bin/bash
+#!/usr/bin/bash
 picom &
-nitrogen --restore 
+nitrogen --restore & 
+dunst -startup-notification &

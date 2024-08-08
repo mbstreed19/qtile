@@ -1,17 +1,47 @@
 from libqtile import bar, layout, qtile, widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, KeyChord
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 import os
 import subprocess
 from libqtile import hook
-from colorschemes import Dracula
+import colors
+# from colorschemes import Dracula
 
 mod = "mod4"
 terminal = "kitty" 
 browser = "firefox"
-cs = Dracula()
+colors = colors.Dracula
+colorscheme = {
 
+    "bg" : "282A36",
+    "fg" : "#F8F8F2",
+    "selection" : "#44475A",
+    "comment" : "#6272A4",
+    "red" : "#FF5555",
+    "orange" : "#FFB86C",
+    "yellow" : "#F1FA8C",
+    "green" : "50fa7b",
+    "purple" : "BD93F9",
+    "cyan" : "#8BE9FD",
+    "pink" : "#FF79C6",
+    "bright_red" : "#FF6E6E",
+    "bright_green" : "#69FF94",
+    "bright_yellow" : "#FFFFA5",
+    "bright_blue" : "#D6ACFF",
+    "bright_magenta" : "#FF92DF",
+    "bright_cyan" : "#A4FFFF",
+    "bright_white" : "#FFFFFF",
+    "menu" : "#21222C",
+    "visual" : "#3E4452",
+    "gutter_fg" : "#4B5263",
+    "nontext" : "#3B4048",
+    "white" : "#ABB2BF",
+    "black" : "#191A21",
+
+
+}
+#
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -57,7 +87,18 @@ keys = [
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "b", lazy.spawn(browser), desc="Spawn a command using a prompt widget"),
+    Key([mod], "b", lazy.spawn(browser), desc="Spawn Firefox"),
+    # KeyChord(
+    #     ["control"],
+    #     "c",
+    #     [
+    #         Key([],
+    #             "q",
+    #             lazy.spawn("nvim ~/.config/qtile/config.py"),
+    #             desc="opens Qtile config",
+    #         ),
+    #     ]
+    # )
 ]
 groups = [Group(i) for i in "123456789"]
 
@@ -93,8 +134,8 @@ layouts = [
     # layout.Bsp(),
     # layout.Matrix(),
     layout.MonadTall(
-        border_focus = cs.pink,
-        border_normal = cs.purple,
+        border_focus = colors[8],
+        border_normal = colors[0],
         border_width = 5,
         margin = 10, 
         single_border_width = 5,
@@ -112,6 +153,8 @@ widget_defaults = dict(
     font="Hack Nerd",
     fontsize=14,
     padding=3,
+    background=colors[0],
+    foreground=colors[1],
 )
 extension_defaults = widget_defaults.copy()
 
@@ -119,15 +162,50 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+                widget.Spacer(length = 10),
                 widget.GroupBox(
-                     active = "50fa7b",
-                     background = "282A36",
+                    active = colors[4],
+                    background = colors[0],
+                    highlight_method = "border",
+                    highlight_color = [colors[2]],
+                    foreground = colors[1],
+                    rounded = False,
+                    inactive = colors[1],
+                    this_current_screen_border = colors[8],
+                    this_screen_border = colors[5],
+                    # padding = 2,
+                    margin_x = 10,
                 ),
+                  
+                widget.Spacer(
+                    length = 20
+                ),
+                widget.Systray(
+                    background = colors[0],
+                    icon_size = 20,
+                    padding = 5,
+                ),
+                widget.Memory(
+                    format = '{MemUsed: .1f}{mm}/{MemTotal: .1f}{mm}',   
+                    measure_mem = "G",
+                ),
+                widget.Spacer(
+                    length = 20
+                ),
+                widget.CPU(
+
+                ),
+                
+                widget.Spacer(
+                    length = 20
+                ),
+
             ],
             30,
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
+        # background = "#00000000",
         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
         # By default we handle these events delayed to already improve performance, however your system might still be struggling
         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
