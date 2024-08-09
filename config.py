@@ -12,36 +12,7 @@ mod = "mod4"
 terminal = "kitty" 
 browser = "firefox"
 colors = colors.Dracula
-colorscheme = {
 
-    "bg" : "282A36",
-    "fg" : "#F8F8F2",
-    "selection" : "#44475A",
-    "comment" : "#6272A4",
-    "red" : "#FF5555",
-    "orange" : "#FFB86C",
-    "yellow" : "#F1FA8C",
-    "green" : "50fa7b",
-    "purple" : "BD93F9",
-    "cyan" : "#8BE9FD",
-    "pink" : "#FF79C6",
-    "bright_red" : "#FF6E6E",
-    "bright_green" : "#69FF94",
-    "bright_yellow" : "#FFFFA5",
-    "bright_blue" : "#D6ACFF",
-    "bright_magenta" : "#FF92DF",
-    "bright_cyan" : "#A4FFFF",
-    "bright_white" : "#FFFFFF",
-    "menu" : "#21222C",
-    "visual" : "#3E4452",
-    "gutter_fg" : "#4B5263",
-    "nontext" : "#3B4048",
-    "white" : "#ABB2BF",
-    "black" : "#191A21",
-
-
-}
-#
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -151,10 +122,10 @@ layouts = [
 
 widget_defaults = dict(
     font="Hack Nerd",
-    fontsize=14,
+    fontsize=16,
     padding=3,
     background=colors[0],
-    foreground=colors[1],
+    foreground=colors[8],
 )
 extension_defaults = widget_defaults.copy()
 
@@ -162,46 +133,71 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.Spacer(length = 10),
+                widget.TextBox(
+                    fmt = "\uf35c",
+                    padding = 10,
+                    mouse_callbacks = {
+                        'Button1': lambda: qtile.cmd_spawn(terminal+ ' -e rofi -show run & disown')
+                    },
+                ),
+                widget.Sep(),
                 widget.GroupBox(
-                    active = colors[4],
+                    active = colors[6],
                     background = colors[0],
                     highlight_method = "border",
                     highlight_color = [colors[2]],
-                    foreground = colors[1],
+                    foreground = colors[8],
                     rounded = False,
-                    inactive = colors[1],
+                    inactive = colors[8],
                     this_current_screen_border = colors[8],
                     this_screen_border = colors[5],
-                    # padding = 2,
-                    margin_x = 10,
+                    padding = 3,
+                    borderwidth = 2,
+                    #margin_x = 50,
                 ),
                   
-                widget.Spacer(
-                    length = 20
-                ),
+                widget.Sep(),
                 widget.Systray(
                     background = colors[0],
                     icon_size = 20,
                     padding = 5,
                 ),
-                widget.Memory(
-                    format = '{MemUsed: .1f}{mm}/{MemTotal: .1f}{mm}',   
-                    measure_mem = "G",
+                widget.Spacer(),
+                widget.Sep(
+                    foreground = colors[6],
                 ),
-                widget.Spacer(
-                    length = 20
+                widget.Memory(
+                    format = '{MemUsed: .1f}{mm}',   
+                    fmt = "RAM:{}",
+                    measure_mem = "G",
+                    mouse_callbacks = {
+                        'Button1': lambda: qtile.cmd_spawn(terminal+ ' -e btop')
+                    },
+                ),
+                widget.Sep(
+                    foreground = colors[6],
+                    # size_percent = 80,
                 ),
                 widget.CPU(
-
+                    fmt = "CPU: {}",
+                    format = "{load_percent}%",
+                    mouse_callbacks = {
+                        'Button1': lambda: qtile.cmd_spawn(terminal+ ' -e btop')
+                    },
                 ),
+                widget.Sep(
+                    foreground = colors[6],
+                ),
+
+                widget.Spacer(),
                 
-                widget.Spacer(
-                    length = 20
+                widget.TextBox(
+                    fmt = "GOOG:$price",
                 ),
 
             ],
             30,
+            background = colors[0],
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
